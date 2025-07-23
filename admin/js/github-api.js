@@ -91,6 +91,20 @@ const GitHubAPI = {
     async getCurrentUser() {
         if (this.user) return this.user;
         
+        // Demo mode for UI testing
+        if (this.getToken() === 'demo_token_for_ui_test') {
+            this.user = {
+                login: 'tonyonier99',
+                name: 'Tony',
+                avatar_url: 'https://avatars.githubusercontent.com/u/200734744?v=4',
+                html_url: 'https://github.com/tonyonier99',
+                id: 200734744,
+                email: 'tony@example.com'
+            };
+            localStorage.setItem('github_user', JSON.stringify(this.user));
+            return this.user;
+        }
+        
         try {
             this.user = await this.request('/user');
             localStorage.setItem('github_user', JSON.stringify(this.user));
@@ -107,6 +121,40 @@ const GitHubAPI = {
      * @returns {Promise<Array>} - Repository list
      */
     async getRepositories(params = {}) {
+        // Demo mode for UI testing
+        if (this.getToken() === 'demo_token_for_ui_test') {
+            return [
+                {
+                    id: 1,
+                    name: 'tonyonier99.github.io',
+                    full_name: 'tonyonier99/tonyonier99.github.io',
+                    description: 'Personal website and portfolio',
+                    private: false,
+                    html_url: 'https://github.com/tonyonier99/tonyonier99.github.io',
+                    clone_url: 'https://github.com/tonyonier99/tonyonier99.github.io.git',
+                    stargazers_count: 5,
+                    forks_count: 2,
+                    language: 'HTML',
+                    updated_at: '2025-01-23T10:30:00Z',
+                    owner: { login: 'tonyonier99', avatar_url: 'https://avatars.githubusercontent.com/u/200734744?v=4' }
+                },
+                {
+                    id: 2,
+                    name: 'awesome-project',
+                    full_name: 'tonyonier99/awesome-project',
+                    description: 'An awesome project built with modern technologies',
+                    private: true,
+                    html_url: 'https://github.com/tonyonier99/awesome-project',
+                    clone_url: 'https://github.com/tonyonier99/awesome-project.git',
+                    stargazers_count: 12,
+                    forks_count: 3,
+                    language: 'JavaScript',
+                    updated_at: '2025-01-22T15:45:00Z',
+                    owner: { login: 'tonyonier99', avatar_url: 'https://avatars.githubusercontent.com/u/200734744?v=4' }
+                }
+            ];
+        }
+        
         const queryParams = new URLSearchParams({
             sort: 'updated',
             per_page: 100,
@@ -588,6 +636,11 @@ const GitHubAPI = {
      * @returns {Promise<boolean>} - Is token valid
      */
     async validateToken(token) {
+        // Demo mode for UI testing
+        if (token === 'demo_token_for_ui_test') {
+            return true;
+        }
+        
         try {
             const tempToken = this.token;
             this.token = token;
