@@ -1,0 +1,422 @@
+<!-- Header Component -->
+<header class="app-header">
+    <div class="header-left">
+        <button id="sidebar-toggle" class="sidebar-toggle" title="切換側邊欄">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="header-title">
+            <h1>GitHub 管理後台</h1>
+            <span id="header-subtitle" class="header-subtitle">儀表板</span>
+        </div>
+    </div>
+    
+    <div class="header-center">
+        <div class="global-search">
+            <input type="search" id="global-search" placeholder="全域搜尋 repositories, issues, PRs..." class="search-input">
+            <button class="search-btn" title="搜尋">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+    
+    <div class="header-right">
+        <div class="header-actions">
+            <!-- Notifications -->
+            <button id="notifications-btn" class="header-btn" title="通知">
+                <i class="fas fa-bell"></i>
+                <span id="notification-badge" class="notification-badge hidden">0</span>
+            </button>
+            
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button class="header-btn" title="快速操作" onclick="UI.showQuickActions()">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+            
+            <!-- Theme Toggle -->
+            <button id="theme-toggle" class="header-btn" title="切換主題">
+                <i class="fas fa-moon"></i>
+            </button>
+            
+            <!-- User Menu -->
+            <div class="user-menu">
+                <button id="user-menu-btn" class="user-menu-btn">
+                    <img id="user-avatar" src="" alt="User Avatar" />
+                    <div class="user-info">
+                        <span id="username">Loading...</span>
+                        <span id="user-role" class="user-role">Admin</span>
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                
+                <div id="user-dropdown" class="user-dropdown hidden">
+                    <div class="dropdown-header">
+                        <img id="dropdown-avatar" src="" alt="User Avatar" />
+                        <div>
+                            <div id="dropdown-name" class="dropdown-name">Loading...</div>
+                            <div id="dropdown-login" class="dropdown-login">@loading</div>
+                        </div>
+                    </div>
+                    
+                    <div class="dropdown-section">
+                        <a href="#" id="profile-link" target="_blank">
+                            <i class="fas fa-user"></i> 
+                            個人檔案
+                            <i class="fas fa-external-link-alt external-icon"></i>
+                        </a>
+                        <a href="#settings" onclick="UI.showSection('settings')">
+                            <i class="fas fa-cog"></i> 
+                            設定
+                        </a>
+                        <a href="#" onclick="UI.showKeyboardShortcutsHelp()">
+                            <i class="fas fa-keyboard"></i> 
+                            鍵盤快捷鍵
+                        </a>
+                    </div>
+                    
+                    <div class="dropdown-section">
+                        <a href="https://docs.github.com/en/rest" target="_blank">
+                            <i class="fas fa-book"></i> 
+                            API 文檔
+                            <i class="fas fa-external-link-alt external-icon"></i>
+                        </a>
+                        <a href="#" onclick="UI.showAbout()">
+                            <i class="fas fa-info-circle"></i> 
+                            關於
+                        </a>
+                    </div>
+                    
+                    <div class="dropdown-footer">
+                        <button id="logout-btn" class="logout-btn">
+                            <i class="fas fa-sign-out-alt"></i> 
+                            登出
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>
+    /* Header component styles */
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-4);
+        flex: 1;
+    }
+    
+    .header-title {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-1);
+    }
+    
+    .header-title h1 {
+        font-size: var(--font-size-lg);
+        font-weight: 600;
+        color: var(--text-primary);
+        line-height: 1;
+    }
+    
+    .header-subtitle {
+        font-size: var(--font-size-xs);
+        color: var(--text-muted);
+        line-height: 1;
+    }
+    
+    .header-center {
+        flex: 2;
+        max-width: 600px;
+        margin: 0 var(--spacing-4);
+    }
+    
+    .global-search {
+        position: relative;
+        width: 100%;
+    }
+    
+    .search-input {
+        width: 100%;
+        padding: var(--spacing-2) var(--spacing-12) var(--spacing-2) var(--spacing-3);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        font-size: var(--font-size-sm);
+        transition: all var(--transition-fast);
+    }
+    
+    .search-input:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        background: var(--bg-primary);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    
+    .search-btn {
+        position: absolute;
+        right: var(--spacing-2);
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+        padding: var(--spacing-2);
+        border-radius: var(--radius-md);
+        transition: color var(--transition-fast);
+    }
+    
+    .search-btn:hover {
+        color: var(--text-primary);
+    }
+    
+    .header-right {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+    }
+    
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-2);
+    }
+    
+    .header-btn {
+        position: relative;
+        background: none;
+        border: none;
+        padding: var(--spacing-2);
+        border-radius: var(--radius-md);
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        min-width: 40px;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .header-btn:hover {
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+    }
+    
+    .notification-badge {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        background: var(--error-color);
+        color: white;
+        font-size: 10px;
+        font-weight: 600;
+        padding: 2px 6px;
+        border-radius: 10px;
+        min-width: 18px;
+        text-align: center;
+        line-height: 1.2;
+    }
+    
+    .user-menu {
+        position: relative;
+        margin-left: var(--spacing-2);
+    }
+    
+    .user-menu-btn {
+        background: none;
+        border: none;
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-2);
+        padding: var(--spacing-2) var(--spacing-3);
+        border-radius: var(--radius-lg);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        max-width: 200px;
+    }
+    
+    .user-menu-btn:hover {
+        background: var(--bg-secondary);
+    }
+    
+    .user-menu-btn img {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+        flex-shrink: 0;
+    }
+    
+    .user-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1px;
+        min-width: 0;
+    }
+    
+    .user-info #username {
+        font-size: var(--font-size-sm);
+        font-weight: 500;
+        color: var(--text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 120px;
+    }
+    
+    .user-role {
+        font-size: var(--font-size-xs);
+        color: var(--text-muted);
+    }
+    
+    .user-menu-btn > i {
+        font-size: var(--font-size-xs);
+        color: var(--text-secondary);
+        flex-shrink: 0;
+    }
+    
+    .user-dropdown {
+        position: absolute;
+        top: calc(100% + var(--spacing-2));
+        right: 0;
+        background: var(--bg-primary);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        min-width: 280px;
+        z-index: 200;
+        overflow: hidden;
+    }
+    
+    .dropdown-header {
+        padding: var(--spacing-4);
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-3);
+        background: var(--bg-secondary);
+    }
+    
+    .dropdown-header img {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    
+    .dropdown-name {
+        font-weight: 600;
+        color: var(--text-primary);
+        font-size: var(--font-size-base);
+    }
+    
+    .dropdown-login {
+        color: var(--text-muted);
+        font-size: var(--font-size-sm);
+    }
+    
+    .dropdown-section {
+        padding: var(--spacing-2) 0;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .dropdown-section:last-of-type {
+        border-bottom: none;
+    }
+    
+    .dropdown-section a,
+    .logout-btn {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-3);
+        padding: var(--spacing-3) var(--spacing-4);
+        color: var(--text-primary);
+        text-decoration: none;
+        transition: background-color var(--transition-fast);
+        font-size: var(--font-size-sm);
+        border: none;
+        background: none;
+        width: 100%;
+        cursor: pointer;
+    }
+    
+    .dropdown-section a:hover,
+    .logout-btn:hover {
+        background: var(--bg-secondary);
+    }
+    
+    .external-icon {
+        margin-left: auto;
+        font-size: var(--font-size-xs);
+        color: var(--text-muted);
+    }
+    
+    .dropdown-footer {
+        padding: var(--spacing-2);
+    }
+    
+    .logout-btn {
+        border-radius: var(--radius-md);
+        color: var(--error-color);
+        margin: 0;
+    }
+    
+    .logout-btn:hover {
+        background: #fef2f2;
+        color: var(--error-color);
+    }
+    
+    [data-theme="dark"] .logout-btn:hover {
+        background: #450a0a;
+    }
+    
+    /* Mobile responsive */
+    @media (max-width: 767px) {
+        .header-center {
+            display: none;
+        }
+        
+        .header-title h1 {
+            font-size: var(--font-size-base);
+        }
+        
+        .header-subtitle {
+            display: none;
+        }
+        
+        .user-info {
+            display: none;
+        }
+        
+        .user-menu-btn img {
+            width: 28px;
+            height: 28px;
+        }
+        
+        .user-dropdown {
+            min-width: 260px;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .header-actions {
+            gap: var(--spacing-1);
+        }
+        
+        .header-btn {
+            min-width: 36px;
+            min-height: 36px;
+        }
+        
+        .user-dropdown {
+            right: -10px;
+            min-width: 240px;
+        }
+    }
+</style>

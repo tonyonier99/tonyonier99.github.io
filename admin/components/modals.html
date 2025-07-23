@@ -1,0 +1,604 @@
+<!-- Modal Components -->
+
+<!-- Confirmation Modal Template -->
+<template id="confirm-modal-template">
+    <div class="modal-header">
+        <h3 class="modal-title">確認操作</h3>
+    </div>
+    <div class="modal-body">
+        <div class="confirm-content">
+            <i class="fas fa-exclamation-triangle confirm-icon"></i>
+            <div class="confirm-text">
+                <h4 id="confirm-title">確定要執行此操作嗎？</h4>
+                <p id="confirm-message">此操作無法復原。</p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="UI.hideModal()">取消</button>
+        <button class="btn btn-danger" id="confirm-action-btn">確定</button>
+    </div>
+</template>
+
+<!-- Create Repository Modal Template -->
+<template id="create-repo-modal-template">
+    <div class="modal-header">
+        <h3 class="modal-title">建立新倉庫</h3>
+    </div>
+    <div class="modal-body">
+        <form id="create-repo-form" class="form">
+            <div class="form-group">
+                <label class="form-label">倉庫名稱 *</label>
+                <input type="text" id="repo-name" class="form-control" placeholder="my-awesome-repo" required>
+                <div class="form-help">只能包含字母、數字、連字號和底線</div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">描述</label>
+                <input type="text" id="repo-description" class="form-control" placeholder="描述您的倉庫...">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">可見性</label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="visibility" value="public" checked>
+                        <span class="radio-custom"></span>
+                        <div class="radio-content">
+                            <strong>公開</strong>
+                            <p>任何人都可以看到此倉庫</p>
+                        </div>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="visibility" value="private">
+                        <span class="radio-custom"></span>
+                        <div class="radio-content">
+                            <strong>私有</strong>
+                            <p>只有您和邀請的協作者可以看到</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="checkbox-option">
+                    <input type="checkbox" id="init-readme" checked>
+                    <span class="checkbox-custom"></span>
+                    <span>初始化 README.md 檔案</span>
+                </label>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">授權條款</label>
+                <select id="repo-license" class="form-control">
+                    <option value="">無授權條款</option>
+                    <option value="mit">MIT License</option>
+                    <option value="apache-2.0">Apache License 2.0</option>
+                    <option value="gpl-3.0">GNU General Public License v3.0</option>
+                    <option value="bsd-3-clause">BSD 3-Clause License</option>
+                </select>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="UI.hideModal()">取消</button>
+        <button class="btn btn-primary" onclick="RepositoryManager.createRepository()">建立倉庫</button>
+    </div>
+</template>
+
+<!-- Create Issue Modal Template -->
+<template id="create-issue-modal-template">
+    <div class="modal-header">
+        <h3 class="modal-title">建立新 Issue</h3>
+    </div>
+    <div class="modal-body">
+        <form id="create-issue-form" class="form">
+            <div class="form-group">
+                <label class="form-label">選擇倉庫 *</label>
+                <select id="issue-repo-select" class="form-control" required>
+                    <option value="">載入中...</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">標題 *</label>
+                <input type="text" id="issue-title" class="form-control" placeholder="Issue 標題..." required>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">內容</label>
+                <textarea id="issue-body" class="form-control" rows="6" placeholder="描述 Issue 的詳細內容..."></textarea>
+                <div class="form-help">支援 Markdown 格式</div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">標籤</label>
+                <div id="issue-labels" class="labels-selector">
+                    <div class="loading-content">
+                        <div class="loading-spinner"></div>
+                        <p>載入標籤中...</p>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="UI.hideModal()">取消</button>
+        <button class="btn btn-primary" onclick="IssueManager.createIssue()">建立 Issue</button>
+    </div>
+</template>
+
+<!-- File Editor Modal Template -->
+<template id="file-editor-modal-template">
+    <div class="modal-header">
+        <h3 class="modal-title">編輯檔案</h3>
+        <button class="modal-close" onclick="UI.hideModal()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <div class="modal-body modal-body-full">
+        <div class="file-editor">
+            <div class="file-editor-header">
+                <div class="file-info">
+                    <i class="fas fa-file-code"></i>
+                    <span id="editor-file-name">檔案名稱</span>
+                </div>
+                <div class="editor-actions">
+                    <button class="btn btn-sm btn-secondary" onclick="FileManager.formatCode()">
+                        <i class="fas fa-magic"></i>
+                        格式化
+                    </button>
+                    <button class="btn btn-sm btn-secondary" onclick="FileManager.previewMarkdown()">
+                        <i class="fas fa-eye"></i>
+                        預覽
+                    </button>
+                </div>
+            </div>
+            
+            <div class="editor-container">
+                <textarea id="file-content-editor" class="code-editor" placeholder="檔案內容..."></textarea>
+            </div>
+            
+            <div class="commit-section">
+                <div class="form-group">
+                    <label class="form-label">提交訊息</label>
+                    <input type="text" id="commit-message" class="form-control" placeholder="更新檔案">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">描述 (可選)</label>
+                    <textarea id="commit-description" class="form-control" rows="2" placeholder="詳細描述變更..."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="UI.hideModal()">取消</button>
+        <button class="btn btn-primary" onclick="FileManager.saveFile()">
+            <i class="fas fa-save"></i>
+            儲存變更
+        </button>
+    </div>
+</template>
+
+<!-- Loading Modal Template -->
+<template id="loading-modal-template">
+    <div class="modal-body text-center">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h3 id="loading-title">處理中...</h3>
+            <p id="loading-message">請稍候</p>
+        </div>
+    </div>
+</template>
+
+<!-- About Modal Template -->
+<template id="about-modal-template">
+    <div class="modal-header">
+        <h3 class="modal-title">關於 GitHub 管理後台</h3>
+    </div>
+    <div class="modal-body">
+        <div class="about-content">
+            <div class="about-header">
+                <i class="fab fa-github about-icon"></i>
+                <div>
+                    <h4>GitHub 管理後台</h4>
+                    <p class="version">版本 1.0.0</p>
+                </div>
+            </div>
+            
+            <div class="about-section">
+                <h5>功能特色</h5>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> 倉庫管理 (建立、編輯、刪除)</li>
+                    <li><i class="fas fa-check"></i> Issues 管理</li>
+                    <li><i class="fas fa-check"></i> Pull Requests 管理</li>
+                    <li><i class="fas fa-check"></i> 檔案瀏覽與編輯</li>
+                    <li><i class="fas fa-check"></i> 響應式設計</li>
+                    <li><i class="fas fa-check"></i> 深色/淺色主題</li>
+                </ul>
+            </div>
+            
+            <div class="about-section">
+                <h5>技術規格</h5>
+                <div class="tech-specs">
+                    <span class="tech-tag">HTML5</span>
+                    <span class="tech-tag">CSS3</span>
+                    <span class="tech-tag">JavaScript ES6+</span>
+                    <span class="tech-tag">GitHub API</span>
+                    <span class="tech-tag">響應式設計</span>
+                </div>
+            </div>
+            
+            <div class="about-section">
+                <h5>開發者</h5>
+                <p>由 Tony 開發，使用純前端技術構建。</p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="UI.hideModal()">關閉</button>
+        <a href="https://github.com/tonyonier99" class="btn btn-primary" target="_blank">
+            <i class="fab fa-github"></i>
+            查看 GitHub
+        </a>
+    </div>
+</template>
+
+<style>
+    /* Modal component styles */
+    .modal-body-full {
+        padding: 0;
+        max-height: 80vh;
+        overflow: hidden;
+    }
+    
+    .modal-close {
+        background: none;
+        border: none;
+        color: var(--text-secondary);
+        cursor: pointer;
+        padding: var(--spacing-2);
+        border-radius: var(--radius-md);
+        transition: all var(--transition-fast);
+    }
+    
+    .modal-close:hover {
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+    }
+    
+    /* Confirm Modal */
+    .confirm-content {
+        display: flex;
+        gap: var(--spacing-4);
+        align-items: flex-start;
+    }
+    
+    .confirm-icon {
+        color: var(--warning-color);
+        font-size: var(--font-size-2xl);
+        flex-shrink: 0;
+    }
+    
+    .confirm-text h4 {
+        margin-bottom: var(--spacing-2);
+        color: var(--text-primary);
+    }
+    
+    .confirm-text p {
+        color: var(--text-secondary);
+        font-size: var(--font-size-sm);
+    }
+    
+    /* Form Components */
+    .radio-group {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-3);
+    }
+    
+    .radio-option {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--spacing-3);
+        padding: var(--spacing-3);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+    }
+    
+    .radio-option:hover {
+        border-color: var(--primary-color);
+        background: var(--bg-secondary);
+    }
+    
+    .radio-option input[type="radio"] {
+        display: none;
+    }
+    
+    .radio-custom {
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--border-color);
+        border-radius: 50%;
+        position: relative;
+        flex-shrink: 0;
+        transition: all var(--transition-fast);
+    }
+    
+    .radio-option input[type="radio"]:checked + .radio-custom {
+        border-color: var(--primary-color);
+    }
+    
+    .radio-option input[type="radio"]:checked + .radio-custom::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--primary-color);
+    }
+    
+    .radio-content {
+        flex: 1;
+    }
+    
+    .radio-content strong {
+        display: block;
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-1);
+    }
+    
+    .radio-content p {
+        color: var(--text-secondary);
+        font-size: var(--font-size-sm);
+        margin: 0;
+    }
+    
+    /* Checkbox Components */
+    .checkbox-option {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-3);
+        cursor: pointer;
+        padding: var(--spacing-2) 0;
+    }
+    
+    .checkbox-option input[type="checkbox"] {
+        display: none;
+    }
+    
+    .checkbox-custom {
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--border-color);
+        border-radius: var(--radius-sm);
+        position: relative;
+        flex-shrink: 0;
+        transition: all var(--transition-fast);
+    }
+    
+    .checkbox-option input[type="checkbox"]:checked + .checkbox-custom {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+    
+    .checkbox-option input[type="checkbox"]:checked + .checkbox-custom::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 6px;
+        width: 6px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+    }
+    
+    /* File Editor */
+    .file-editor {
+        height: 70vh;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .file-editor-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--spacing-4);
+        border-bottom: 1px solid var(--border-color);
+        background: var(--bg-secondary);
+    }
+    
+    .file-info {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-2);
+        font-weight: 500;
+        color: var(--text-primary);
+    }
+    
+    .editor-actions {
+        display: flex;
+        gap: var(--spacing-2);
+    }
+    
+    .editor-container {
+        flex: 1;
+        padding: var(--spacing-4);
+        overflow: hidden;
+    }
+    
+    .code-editor {
+        width: 100%;
+        height: 100%;
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        padding: var(--spacing-3);
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        font-size: var(--font-size-sm);
+        line-height: 1.5;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        resize: none;
+    }
+    
+    .code-editor:focus {
+        outline: none;
+        border-color: var(--primary-color);
+    }
+    
+    .commit-section {
+        padding: var(--spacing-4);
+        border-top: 1px solid var(--border-color);
+        background: var(--bg-secondary);
+    }
+    
+    /* Labels Selector */
+    .labels-selector {
+        max-height: 200px;
+        overflow-y: auto;
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        padding: var(--spacing-3);
+    }
+    
+    .label-item {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-2);
+        padding: var(--spacing-2);
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: background-color var(--transition-fast);
+    }
+    
+    .label-item:hover {
+        background: var(--bg-secondary);
+    }
+    
+    .label-item input[type="checkbox"] {
+        margin: 0;
+    }
+    
+    .label-badge {
+        padding: var(--spacing-1) var(--spacing-2);
+        border-radius: var(--radius-md);
+        font-size: var(--font-size-xs);
+        font-weight: 500;
+        color: white;
+    }
+    
+    /* About Modal */
+    .about-content {
+        space-y: var(--spacing-6);
+    }
+    
+    .about-header {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-4);
+        margin-bottom: var(--spacing-6);
+    }
+    
+    .about-icon {
+        font-size: 3rem;
+        color: var(--text-primary);
+    }
+    
+    .about-header h4 {
+        font-size: var(--font-size-xl);
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-1);
+    }
+    
+    .version {
+        color: var(--text-muted);
+        font-size: var(--font-size-sm);
+    }
+    
+    .about-section {
+        margin-bottom: var(--spacing-6);
+    }
+    
+    .about-section h5 {
+        font-size: var(--font-size-base);
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-3);
+    }
+    
+    .feature-list {
+        list-style: none;
+        space-y: var(--spacing-2);
+    }
+    
+    .feature-list li {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-2);
+        color: var(--text-secondary);
+        font-size: var(--font-size-sm);
+        margin-bottom: var(--spacing-2);
+    }
+    
+    .feature-list i {
+        color: var(--success-color);
+    }
+    
+    .tech-specs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--spacing-2);
+    }
+    
+    .tech-tag {
+        padding: var(--spacing-1) var(--spacing-3);
+        background: var(--bg-tertiary);
+        color: var(--text-primary);
+        border-radius: var(--radius-md);
+        font-size: var(--font-size-xs);
+        font-weight: 500;
+    }
+    
+    /* Mobile responsive */
+    @media (max-width: 767px) {
+        .modal-body-full {
+            max-height: 85vh;
+        }
+        
+        .file-editor {
+            height: 60vh;
+        }
+        
+        .file-editor-header {
+            flex-direction: column;
+            gap: var(--spacing-3);
+            align-items: stretch;
+        }
+        
+        .editor-actions {
+            justify-content: center;
+        }
+        
+        .about-header {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .tech-specs {
+            justify-content: center;
+        }
+        
+        .confirm-content {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+</style>
