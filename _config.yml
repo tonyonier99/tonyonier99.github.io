@@ -1,12 +1,12 @@
 # 網站基本設定
-title: "您的姓名"
+title: "Tony 的個人網站"
 description: "創業家、內容創作者與專業領域專家"
 baseurl: ""
 url: "https://tonyonier99.github.io"
 
 # 作者資訊
 author:
-  name: "您的姓名"
+  name: "Tony"
   email: "your.email@example.com"
 
 # 建置設定
@@ -18,7 +18,8 @@ theme: minima
 header_pages:
   - about.md
   - blog.md
-  - portfolio.md
+  - courses.md
+  - books.md
   - contact.md
 
 # 社群媒體連結
@@ -27,6 +28,7 @@ social_links:
   github: tonyonier99
   linkedin: your_linkedin
   instagram: your_instagram
+  youtube: your_youtube
 
 # SEO 和功能插件
 plugins:
@@ -55,7 +57,7 @@ defaults:
       type: "posts"
     values:
       layout: "post"
-      author: "您的姓名"
+      author: "Tony"
   - scope:
       path: ""
       type: "pages"
