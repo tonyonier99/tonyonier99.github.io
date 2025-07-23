@@ -636,6 +636,17 @@ body {
   animation: fadeInUp 0.6s ease-out;
 }
 
+/* 改善載入性能的預載入提示 */
+.hero-image img {
+  loading: lazy;
+}
+
+/* 確保圖片不會溢出 */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 /* 滾動條樣式 */
 ::-webkit-scrollbar {
   width: 8px;
@@ -652,4 +663,42 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-light);
+}
+
+/* Focus 狀態優化 - 提升無障礙設計 */
+.btn:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid var(--primary-orange);
+  outline-offset: 2px;
+}
+
+/* 網站性能優化 */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 避免內容位移 */
+.hero-image {
+  min-height: 240px;
+}
+
+/* 改善卡片懸停效果 */
+.card,
+.article-card,
+.course-card {
+  will-change: transform, box-shadow;
+}
+
+/* 優化動畫性能 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
