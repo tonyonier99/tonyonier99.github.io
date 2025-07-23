@@ -65,6 +65,21 @@ body {
   padding: 0 var(--space-lg);
 }
 
+/* 滿版設計容器 */
+.section-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--space-xl);
+}
+
+/* 滿版區塊基礎樣式 */
+.full-width-section {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  padding: 80px 0;
+  position: relative;
+}
+
 /* 網格系統 */
 .grid {
   display: grid;
@@ -102,8 +117,14 @@ body {
 
 /* Hero Section */
 .hero {
-  padding: var(--space-3xl) 0;
-  background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+  min-height: 100vh;
+  background: linear-gradient(135deg, #fff5f0 0%, #ffffff 50%, #f8f9fa 100%);
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
 }
 
 .hero-content {
@@ -111,6 +132,9 @@ body {
   grid-template-columns: 1fr 300px;
   gap: var(--space-3xl);
   align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--space-xl);
 }
 
 .hero-text h1 {
@@ -150,35 +174,42 @@ body {
 
 /* 統計數據區塊 */
 .stats-section {
-  padding: var(--space-3xl) 0;
-  background-color: var(--light-background);
+  background: #2c3e50;
+  color: white;
+  padding: 80px 0;
+  margin: 0;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
 }
 
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--space-xl);
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--space-xl);
 }
 
 .stat-card {
   text-align: center;
   padding: var(--space-xl);
-  background: var(--background-white);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border-light);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .stat-number {
   font-size: 2.5rem;
   font-weight: 800;
-  color: var(--primary-orange);
+  color: #ff6b35;
   margin-bottom: var(--space-sm);
 }
 
 .stat-label {
   font-size: 0.875rem;
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.8);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -329,10 +360,19 @@ body {
 
 /* 電子報訂閱區塊 */
 .newsletter-section {
-  padding: var(--space-3xl) 0;
-  background: linear-gradient(135deg, var(--primary-orange) 0%, #ff8f65 100%);
+  background: linear-gradient(135deg, #ff6b35 0%, #f39c12 100%);
   color: white;
   text-align: center;
+  padding: 80px 0;
+  margin: 0;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+}
+
+.newsletter-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--space-xl);
 }
 
 .newsletter-content h2 {
@@ -383,7 +423,26 @@ body {
 
 /* Section 樣式 */
 .section {
-  padding: var(--space-3xl) 0;
+  padding: 80px 0;
+}
+
+/* 精選內容區塊 (滿版淺色背景) */
+.featured-content {
+  background: #f8f9fa;
+  padding: 80px 0;
+  margin: 0;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+}
+
+.featured-content .section-header,
+.featured-content .grid,
+.featured-content .text-center {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-xl);
+  padding-right: var(--space-xl);
 }
 
 .section-header {
@@ -469,8 +528,21 @@ body {
 
 /* YouTube 區塊 */
 .youtube-section {
-  padding: var(--space-3xl) 0;
   background-color: var(--light-background);
+  padding: 80px 0;
+  margin: 0;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+}
+
+.youtube-section .section-header,
+.youtube-section .youtube-embed,
+.youtube-section .youtube-cta {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-xl);
+  padding-right: var(--space-xl);
 }
 
 .youtube-embed {
@@ -516,18 +588,47 @@ body {
   .hero-content {
     grid-template-columns: 1fr;
     text-align: center;
+    padding: 0 var(--space-lg);
   }
   
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
+    padding: 0 var(--space-lg);
   }
   
   .grid-cols-3 {
     grid-template-columns: repeat(2, 1fr);
   }
+  
+  .section-container {
+    padding: 0 var(--space-lg);
+  }
+  
+  .featured-content .section-header,
+  .featured-content .grid,
+  .featured-content .text-center {
+    padding-left: var(--space-lg);
+    padding-right: var(--space-lg);
+  }
+  
+  .youtube-section .section-header,
+  .youtube-section .youtube-embed,
+  .youtube-section .youtube-cta {
+    padding-left: var(--space-lg);
+    padding-right: var(--space-lg);
+  }
 }
 
 @media (max-width: 768px) {
+  .hero {
+    min-height: 80vh;
+    padding: var(--space-xl) 0;
+  }
+  
+  .hero-content {
+    padding: 0 var(--space-md);
+  }
+  
   .hero-text h1 {
     font-size: 2.25rem;
   }
@@ -543,6 +644,7 @@ body {
   .stats-grid {
     grid-template-columns: 1fr;
     gap: var(--space-lg);
+    padding: 0 var(--space-md);
   }
   
   .grid-cols-2,
@@ -554,16 +656,37 @@ body {
     flex-direction: column;
   }
   
-  .container,
-  .container-sm {
+  .newsletter-content {
     padding: 0 var(--space-md);
+  }
+  
+  .section-container {
+    padding: 0 var(--space-md);
+  }
+  
+  .featured-content .section-header,
+  .featured-content .grid,
+  .featured-content .text-center {
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+  }
+  
+  .youtube-section .section-header,
+  .youtube-section .youtube-embed,
+  .youtube-section .youtube-cta {
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
   }
   
   .hero {
     padding: var(--space-xl) 0;
   }
   
-  .section {
+  .section,
+  .stats-section,
+  .featured-content,
+  .newsletter-section,
+  .youtube-section {
     padding: var(--space-xl) 0;
   }
   
