@@ -1,0 +1,24 @@
+---
+layout: default
+---
+
+<div class="page-header">
+  <div class="container">
+    <h1 class="page-title">{{ page.title }}</h1>
+    <p class="page-subtitle">{{ page.date | date: "%Y年%m月%d日" }}</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="container-sm">
+    <article class="post-content">
+      {{ content }}
+    </article>
+    
+    {% if page.author %}
+    <div class="post-author">
+      <p>作者：{{ page.author }}</p>
+    </div>
+    {% endif %}
+  </div>
+</div>

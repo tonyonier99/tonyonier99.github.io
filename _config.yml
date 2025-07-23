@@ -12,7 +12,8 @@ author:
 # 建置設定
 markdown: kramdown
 highlighter: rouge
-theme: minima
+# Remove theme dependency for custom layouts
+# theme: minima
 
 # 導航選單
 header_pages:
