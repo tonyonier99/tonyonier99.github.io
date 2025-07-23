@@ -34,3 +34,9 @@ Thumbs.db
 # Temporary files
 tmp/
 temp/
+
+# Admin system
+admin/node_modules/
+admin/dist/
+admin/server/node_modules/
+admin/server/.env
