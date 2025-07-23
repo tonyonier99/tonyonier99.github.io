@@ -1,117 +1,320 @@
 ---
-layout: page
+layout: default
 title: "聯絡我"
 permalink: /contact/
 ---
 
-# 聯絡我 📬
+<link rel="stylesheet" href="{{ '/assets/css/ali-style.css' | relative_url }}">
 
-很高興您想要與我聯繫！無論是商業合作、諮詢交流，或是單純想要聊聊，我都很樂意聽到您的聲音。
+<!-- 頁面標題 -->
+<section class="page-header">
+  <div class="container">
+    <h1 class="page-title">聯絡我</h1>
+    <p class="page-subtitle">
+      有任何問題、合作機會或想法分享？我很樂意與您交流
+    </p>
+  </div>
+</section>
 
-## 📧 聯繫方式
+<!-- 聯絡方式和表單 -->
+<section class="section">
+  <div class="container">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;">
+      <!-- 聯絡資訊 -->
+      <div>
+        <h2 style="font-size: 1.75rem; margin-bottom: 1.5rem; color: var(--text-primary);">讓我們開始對話</h2>
+        <p style="font-size: 1.125rem; color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.6;">
+          無論您是想要合作、諮詢，或只是想聊聊創業和個人成長的話題，
+          我都很樂意與您交流。請選擇最適合的聯絡方式。
+        </p>
+        
+        <!-- 聯絡選項 -->
+        <div class="space-y-4" style="margin-bottom: 2rem;">
+          <div class="card">
+            <div class="card-body">
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <div style="width: 48px; height: 48px; background: var(--primary-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.25rem;">
+                  📧
+                </div>
+                <div>
+                  <h3 style="margin-bottom: 0.25rem; font-size: 1.125rem;">電子郵件</h3>
+                  <p style="color: var(--text-secondary); margin: 0;">your.email@example.com</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-body">
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <div style="width: 48px; height: 48px; background: #0077b5; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.25rem;">
+                  💼
+                </div>
+                <div>
+                  <h3 style="margin-bottom: 0.25rem; font-size: 1.125rem;">LinkedIn</h3>
+                  <p style="color: var(--text-secondary); margin: 0;">專業網絡和商業合作</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-body">
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <div style="width: 48px; height: 48px; background: #1da1f2; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.25rem;">
+                  🐦
+                </div>
+                <div>
+                  <h3 style="margin-bottom: 0.25rem; font-size: 1.125rem;">Twitter</h3>
+                  <p style="color: var(--text-secondary); margin: 0;">即時交流和想法分享</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 回應時間 -->
+        <div class="card" style="background-color: var(--light-background);">
+          <div class="card-body">
+            <h4 style="margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+              ⏰ 回應時間
+            </h4>
+            <ul style="color: var(--text-secondary); margin: 0; padding-left: 1.25rem;">
+              <li>電子郵件：24-48 小時內</li>
+              <li>社群媒體：當天回覆</li>
+              <li>聯絡表單：2-3 個工作天</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 聯絡表單 -->
+      <div>
+        <div class="card">
+          <div class="card-header">
+            <h3 style="margin: 0; font-size: 1.25rem;">發送訊息</h3>
+          </div>
+          <div class="card-body">
+            <form action="#" method="post" style="space-y: 1.5rem;">
+              <div style="margin-bottom: 1.5rem;">
+                <label for="name" style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary);">
+                  姓名 *
+                </label>
+                <input 
+                  type="text" 
+                  id="name" 
+                  name="name" 
+                  required
+                  style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-light); border-radius: var(--radius-md); font-size: 1rem;"
+                  placeholder="請輸入您的姓名"
+                >
+              </div>
+              
+              <div style="margin-bottom: 1.5rem;">
+                <label for="email" style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary);">
+                  電子郵件 *
+                </label>
+                <input 
+                  type="email" 
+                  id="email" 
+                  name="email" 
+                  required
+                  style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-light); border-radius: var(--radius-md); font-size: 1rem;"
+                  placeholder="your@email.com"
+                >
+              </div>
+              
+              <div style="margin-bottom: 1.5rem;">
+                <label for="subject" style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary);">
+                  主旨 *
+                </label>
+                <select 
+                  id="subject" 
+                  name="subject" 
+                  required
+                  style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-light); border-radius: var(--radius-md); font-size: 1rem; background-color: white;"
+                >
+                  <option value="">請選擇主旨</option>
+                  <option value="collaboration">商業合作</option>
+                  <option value="consultation">諮詢服務</option>
+                  <option value="speaking">演講邀請</option>
+                  <option value="interview">媒體採訪</option>
+                  <option value="feedback">網站回饋</option>
+                  <option value="other">其他</option>
+                </select>
+              </div>
+              
+              <div style="margin-bottom: 1.5rem;">
+                <label for="message" style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary);">
+                  訊息內容 *
+                </label>
+                <textarea 
+                  id="message" 
+                  name="message" 
+                  rows="6" 
+                  required
+                  style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-light); border-radius: var(--radius-md); font-size: 1rem; resize: vertical;"
+                  placeholder="請詳細描述您想要討論的內容..."
+                ></textarea>
+              </div>
+              
+              <div style="margin-bottom: 1.5rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: var(--text-secondary);">
+                  <input type="checkbox" required style="margin: 0;">
+                  我同意收到回覆郵件，並了解我的資料將依照隱私政策處理
+                </label>
+              </div>
+              
+              <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.875rem;">
+                發送訊息
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-### 主要聯繫
-- **電子郵件：** [your.email@example.com](mailto:your.email@example.com)
-- **回覆時間：** 通常在 24 小時內回覆
+<!-- 其他聯絡方式 -->
+<section class="section" style="background-color: var(--light-background);">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">其他聯絡方式</h2>
+      <p class="section-subtitle">
+        選擇最適合您的方式與我保持聯繫
+      </p>
+    </div>
+    
+    <div class="grid grid-cols-3">
+      <!-- 社群媒體 -->
+      <div class="card">
+        <div class="card-body">
+          <div style="text-align: center;">
+            <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary-orange) 0%, #ff8f65 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; margin: 0 auto 1rem;">
+              📱
+            </div>
+            <h3 style="margin-bottom: 0.75rem;">社群媒體</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.5;">
+              在社群平台上關注我，獲得最新動態和即時互動
+            </p>
+            <div style="display: flex; gap: 0.75rem; justify-content: center;">
+              <a href="https://twitter.com/your_handle" class="btn btn-outline" style="padding: 0.5rem;" target="_blank">Twitter</a>
+              <a href="https://linkedin.com/in/your-profile" class="btn btn-outline" style="padding: 0.5rem;" target="_blank">LinkedIn</a>
+              <a href="https://instagram.com/your_handle" class="btn btn-outline" style="padding: 0.5rem;" target="_blank">Instagram</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 電子報 -->
+      <div class="card">
+        <div class="card-body">
+          <div style="text-align: center;">
+            <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; margin: 0 auto 1rem;">
+              📬
+            </div>
+            <h3 style="margin-bottom: 0.75rem;">電子報</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.5;">
+              訂閱我的電子報，每週收到深度內容和獨家見解
+            </p>
+            <a href="#newsletter" class="btn btn-primary">立即訂閱</a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- YouTube -->
+      <div class="card">
+        <div class="card-body">
+          <div style="text-align: center;">
+            <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; margin: 0 auto 1rem;">
+              🎥
+            </div>
+            <h3 style="margin-bottom: 0.75rem;">YouTube 頻道</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.5;">
+              訂閱我的 YouTube 頻道，觀看深度影片內容
+            </p>
+            <a href="https://youtube.com/@yourchannel" class="btn btn-primary" target="_blank">訂閱頻道</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-### 社群媒體
-- **LinkedIn：** [linkedin.com/in/your-profile](https://linkedin.com/in/your-profile)
-- **Twitter：** [@your_handle](https://twitter.com/your_handle)
-- **Instagram：** [@your_handle](https://instagram.com/your_handle)
-- **YouTube：** [您的頻道名稱](https://youtube.com/your-channel)
+<!-- FAQ -->
+<section class="section">
+  <div class="container-sm">
+    <div class="section-header">
+      <h2 class="section-title">常見問題</h2>
+    </div>
+    
+    <div style="max-width: 700px; margin: 0 auto;">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h4 style="margin-bottom: 0.75rem;">您通常多久回覆一次郵件？</h4>
+          <p style="color: var(--text-secondary); margin: 0; line-height: 1.5;">
+            我努力在 24-48 小時內回覆所有郵件。如果是緊急事務，建議透過社群媒體私訊聯繫。
+          </p>
+        </div>
+      </div>
+      
+      <div class="card mb-4">
+        <div class="card-body">
+          <h4 style="margin-bottom: 0.75rem;">我可以邀請您來演講嗎？</h4>
+          <p style="color: var(--text-secondary); margin: 0; line-height: 1.5;">
+            當然可以！請透過聯絡表單說明活動詳情、日期、地點和主題要求，我會盡快回覆。
+          </p>
+        </div>
+      </div>
+      
+      <div class="card mb-4">
+        <div class="card-body">
+          <h4 style="margin-bottom: 0.75rem;">您提供一對一諮詢服務嗎？</h4>
+          <p style="color: var(--text-secondary); margin: 0; line-height: 1.5;">
+            是的，我提供有限的一對一諮詢服務。請透過郵件說明您的需求，我會提供相關資訊。
+          </p>
+        </div>
+      </div>
+      
+      <div class="card mb-4">
+        <div class="card-body">
+          <h4 style="margin-bottom: 0.75rem;">如何與您合作或邀請您參與專案？</h4>
+          <p style="color: var(--text-secondary); margin: 0; line-height: 1.5;">
+            請透過聯絡表單詳細說明合作內容、時程和期望，我會評估並盡快回覆。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-## 🤝 合作機會
-
-我對以下類型的合作特別有興趣：
-
-### 💼 商業諮詢
-- 創業策略規劃
-- 產品開發建議
-- 市場進入策略
-- 團隊建設指導
-
-### 🎤 演講邀約
-- 創業經驗分享
-- 科技趨勢展望
-- 個人品牌建立
-- 領導力發展
-
-### 📝 內容合作
-- 客座文章撰寫
-- Podcast 訪談
-- 影片合作製作
-- 線上課程開發
-
-### 📚 媒體邀約
-- 專訪邀請
-- 專家評論
-- 產業觀點分享
-- 趨勢分析
-
-## ⏰ 會面安排
-
-如果您希望安排會面討論，我提供以下選項：
-
-- **線上會議：** 透過 Zoom 或 Google Meet
-- **實體會面：** 台北市區（需提前預約）
-- **電話諮詢：** 適合簡短討論
-
-**預約方式：** 請發送郵件說明：
-1. 您的姓名和職稱
-2. 希望討論的主題
-3. 建議的時間（提供 2-3 個選項）
-4. 偏好的會面方式
-
-## 📋 合作提案指引
-
-為了更有效率地處理您的提案，請在聯繫時包含：
-
-### 基本資訊
-- 您的姓名和公司/組織
-- 聯繫方式
-- 提案的具體內容
-
-### 專案詳情
-- 合作類型和範圍
-- 預期時程
-- 預算範圍（如適用）
-- 期望的交付成果
-
-### 背景資料
-- 您的公司/組織簡介
-- 之前的相關經驗
-- 為什麼選擇與我合作
-
-## 🚫 請注意
-
-為了確保高品質的合作，我通常不接受：
-- 與我價值觀不符的案件
-- 時程過於緊迫的專案
-- 缺乏詳細規劃的提案
-- 投機性質的商業機會
-
-## 📍 所在位置
-
-**主要活動區域：** 台灣台北  
-**時區：** UTC+8 (台北時間)  
-**最佳聯繫時間：** 週一至週五 9:00-18:00
-
----
-
-## 💭 常見問題
-
-**Q: 回覆郵件需要多長時間？**  
-A: 我通常在 24 小時內回覆，最晚不超過 48 小時。
-
-**Q: 是否提供免費諮詢？**  
-A: 簡短的問題解答是免費的，但詳細的商業諮詢可能需要收費。
-
-**Q: 可以直接打電話聯繫嗎？**  
-A: 建議先透過郵件聯繫，我會提供電話號碼給有需要的合作夥伴。
-
-**Q: 是否接受學生的訪談請求？**  
-A: 我很樂意支持學生的學習，請透過郵件說明您的研究主題和用途。
-
----
-
-*期待與您的交流！讓我們一起創造美好的事物。* ✨
+<script>
+// 表單處理
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.querySelector('form');
+  
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // 這裡可以添加實際的表單提交邏輯
+    alert('感謝您的訊息！我會盡快回覆您。');
+    
+    // 重置表單
+    form.reset();
+  });
+  
+  // 表單驗證
+  const inputs = form.querySelectorAll('input[required], textarea[required], select[required]');
+  
+  inputs.forEach(input => {
+    input.addEventListener('blur', function() {
+      if (!this.value.trim()) {
+        this.style.borderColor = '#ef4444';
+      } else {
+        this.style.borderColor = 'var(--border-light)';
+      }
+    });
+  });
+});
+</script>
