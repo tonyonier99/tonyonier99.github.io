@@ -8,7 +8,7 @@ import {
   DocumentIcon,
   PhotoIcon,
   CogIcon,
-  LogoutIcon,
+  ArrowRightOnRectangleIcon,
   UserIcon,
 } from '@heroicons/react/24/outline';
 
@@ -111,7 +111,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 className="ml-3 p-1 text-gray-400 hover:text-gray-600 transition-colors duration-200"
                 title="登出"
               >
-                <LogoutIcon className="h-5 w-5" />
+                <ArrowRightOnRectangleIcon className="h-5 w-5" />
               </button>
             </div>
           </div>
