@@ -40,3 +40,7 @@ admin/node_modules/
 admin/dist/
 admin/server/node_modules/
 admin/server/.env
+
+# Web admin system - exclude temporary files
+admin-web/*.log
+admin-web/.DS_Store

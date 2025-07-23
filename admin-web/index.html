@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tony 的部落格管理後台</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 主容器 -->
+    <div id="app">
+        <!-- 認證畫面 -->
+        <div id="auth-screen" class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1>部落格管理後台</h1>
+                    <p>請輸入您的 GitHub Personal Access Token 以開始管理</p>
+                </div>
+                <form id="auth-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="github-token">GitHub Personal Access Token</label>
+                        <input type="password" id="github-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" required>
+                        <small class="form-help">
+                            需要具備 <code>repo</code> 權限的 token。
+                            <a href="https://github.com/settings/tokens/new?scopes=repo&description=Blog%20Admin" target="_blank">建立新 Token</a>
+                        </small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i>
+                        登入
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 主要管理介面 -->
+        <div id="main-screen" class="main-container" style="display: none;">
+            <!-- 側邊欄 -->
+            <nav class="sidebar">
+                <div class="sidebar-header">
+                    <h2>管理後台</h2>
+                    <button id="logout-btn" class="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+                <ul class="sidebar-menu">
+                    <li>
+                        <a href="#" data-page="dashboard" class="nav-link active">
+                            <i class="fas fa-chart-pie"></i>
+                            儀表板
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="posts" class="nav-link">
+                            <i class="fas fa-edit"></i>
+                            文章管理
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="pages" class="nav-link">
+                            <i class="fas fa-file-alt"></i>
+                            頁面管理
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="media" class="nav-link">
+                            <i class="fas fa-images"></i>
+                            媒體管理
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="settings" class="nav-link">
+                            <i class="fas fa-cog"></i>
+                            網站設定
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- 主要內容區域 -->
+            <main class="main-content">
+                <!-- 頁面標題 -->
+                <header class="page-header">
+                    <h1 id="page-title">儀表板</h1>
+                    <div class="page-actions" id="page-actions">
+                        <!-- 動態按鈕將在這裡插入 -->
+                    </div>
+                </header>
+
+                <!-- 內容區域 -->
+                <div id="content-area" class="content-area">
+                    <!-- 各頁面內容將動態載入到這裡 -->
+                </div>
+            </main>
+        </div>
+
+        <!-- 載入指示器 -->
+        <div id="loading" class="loading-overlay" style="display: none;">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>載入中...</p>
+            </div>
+        </div>
+
+        <!-- 通知訊息 -->
+        <div id="notification" class="notification" style="display: none;">
+            <div class="notification-content">
+                <span class="notification-message"></span>
+                <button class="notification-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模態對話框容器 -->
+    <div id="modal-container"></div>
+
+    <!-- JavaScript -->
+    <script src="assets/js/github-api.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/editor.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
