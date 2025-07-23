@@ -52,7 +52,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* 容器和佈局 */
+/* 容器和佈局 - Enhanced for full-width design */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -63,6 +63,19 @@ body {
   max-width: 800px;
   margin: 0 auto;
   padding: 0 var(--space-lg);
+}
+
+/* Full-width containers */
+.container-full {
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+
+.container-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
 }
 
 /* 網格系統 */

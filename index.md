@@ -3,10 +3,8 @@ layout: default
 title: "創業家、內容創作者與專業領域專家"
 ---
 
-<link rel="stylesheet" href="{{ '/assets/css/ali-style.css' | relative_url }}">
-
-<!-- Hero Section -->
-<section class="hero">
+<!-- Hero Section - Full Width -->
+<section class="hero fullwidth-section">
   <div class="container">
     <div class="hero-content">
       <div class="hero-text">
@@ -28,8 +26,8 @@ title: "創業家、內容創作者與專業領域專家"
   </div>
 </section>
 
-<!-- 統計數據區塊 -->
-<section class="stats-section">
+<!-- 統計數據區塊 - Full Width -->
+<section class="stats-section fullwidth-section">
   <div class="container">
     <div class="stats-grid">
       <div class="stat-card">
@@ -84,8 +82,8 @@ title: "創業家、內容創作者與專業領域專家"
   </div>
 </section>
 
-<!-- 電子報訂閱區塊 -->
-<section class="newsletter-section" id="newsletter">
+<!-- 電子報訂閱區塊 - Full Width -->
+<section class="newsletter-section fullwidth-section" id="newsletter">
   <div class="container">
     <div class="newsletter-content">
       <h2>加入我的電子報</h2>
@@ -153,8 +151,8 @@ title: "創業家、內容創作者與專業領域專家"
   </div>
 </section>
 
-<!-- YouTube 頻道區塊 -->
-<section class="youtube-section">
+<!-- YouTube 頻道區塊 - Full Width -->
+<section class="youtube-section fullwidth-section">
   <div class="container">
     <div class="section-header">
       <h2 class="section-title" style="color: var(--text-primary);">YouTube 頻道</h2>
