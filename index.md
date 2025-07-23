@@ -53,7 +53,7 @@ title: "創業家、內容創作者與專業領域專家"
 </section>
 
 <!-- 最新文章區塊 -->
-<section class="section">
+<section class="section featured-content">
   <div class="container">
     <div class="section-header">
       <h2 class="section-title">最新文章</h2>

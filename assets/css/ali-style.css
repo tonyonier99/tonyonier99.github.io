@@ -54,7 +54,7 @@ body {
 
 /* 容器和佈局 */
 .container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 var(--space-lg);
 }
@@ -63,6 +63,19 @@ body {
   max-width: 800px;
   margin: 0 auto;
   padding: 0 var(--space-lg);
+}
+
+/* 滿版區塊基礎類別 */
+.full-width-section {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  padding: 80px 0;
+}
+
+.section-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
 }
 
 /* 網格系統 */
@@ -102,8 +115,16 @@ body {
 
 /* Hero Section */
 .hero {
-  padding: var(--space-3xl) 0;
-  background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+  min-height: 100vh;
+  background: linear-gradient(135deg, #fff5f0 0%, #ffffff 50%, #f8f9fa 100%);
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.hero .container {
+  width: 100%;
 }
 
 .hero-content {
@@ -150,8 +171,12 @@ body {
 
 /* 統計數據區塊 */
 .stats-section {
-  padding: var(--space-3xl) 0;
-  background-color: var(--light-background);
+  background: #2c3e50;
+  color: white;
+  padding: 80px 0;
+  margin: 0;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
 }
 
 .stats-grid {
@@ -172,13 +197,13 @@ body {
 .stat-number {
   font-size: 2.5rem;
   font-weight: 800;
-  color: var(--primary-orange);
+  color: #ff6b35;
   margin-bottom: var(--space-sm);
 }
 
 .stat-label {
   font-size: 0.875rem;
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.8);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -329,9 +354,12 @@ body {
 
 /* 電子報訂閱區塊 */
 .newsletter-section {
-  padding: var(--space-3xl) 0;
-  background: linear-gradient(135deg, var(--primary-orange) 0%, #ff8f65 100%);
+  background: linear-gradient(135deg, #ff6b35 0%, #f39c12 100%);
   color: white;
+  padding: 80px 0;
+  margin: 0;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
   text-align: center;
 }
 
@@ -383,7 +411,16 @@ body {
 
 /* Section 樣式 */
 .section {
-  padding: var(--space-3xl) 0;
+  padding: 80px 0;
+}
+
+/* 最新文章區塊 (滿版淺色背景) */
+.featured-content {
+  background: #f8f9fa;
+  padding: 80px 0;
+  margin: 0;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
 }
 
 .section-header {
@@ -469,8 +506,11 @@ body {
 
 /* YouTube 區塊 */
 .youtube-section {
-  padding: var(--space-3xl) 0;
-  background-color: var(--light-background);
+  background-color: #f8f9fa;
+  padding: 80px 0;
+  margin: 0;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
 }
 
 .youtube-embed {
@@ -560,11 +600,16 @@ body {
   }
   
   .hero {
+    min-height: 90vh;
     padding: var(--space-xl) 0;
   }
   
-  .section {
-    padding: var(--space-xl) 0;
+  .section,
+  .stats-section,
+  .newsletter-section,
+  .youtube-section,
+  .featured-content {
+    padding: 60px 0;
   }
   
   .youtube-embed iframe {
