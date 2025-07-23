@@ -1,0 +1,280 @@
+/* Dark Theme */
+[data-theme="dark"] {
+    /* Dark Theme Colors */
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-tertiary: #334155;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #64748b;
+    --border-color: #334155;
+    --border-hover: #475569;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+}
+
+/* Theme-specific component adjustments */
+[data-theme="dark"] .login-screen,
+[data-theme="dark"] .login-page {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+[data-theme="dark"] .login-error {
+    background: #450a0a;
+    border-color: #7f1d1d;
+}
+
+[data-theme="dark"] .token-permissions {
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-3);
+}
+
+[data-theme="dark"] .notification {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .table tr:hover {
+    background: var(--bg-tertiary);
+}
+
+[data-theme="dark"] .form-control {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .form-control:focus {
+    border-color: var(--primary-color);
+    background: var(--bg-primary);
+}
+
+[data-theme="dark"] .btn-secondary {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+    background: var(--bg-secondary);
+    border-color: var(--border-hover);
+}
+
+[data-theme="dark"] .modal {
+    background: var(--bg-secondary);
+}
+
+[data-theme="dark"] .modal-header,
+[data-theme="dark"] .modal-footer {
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .user-dropdown {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .badge-secondary {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+}
+
+/* Theme transition animations */
+* {
+    transition: background-color var(--transition-fast), 
+                border-color var(--transition-fast), 
+                color var(--transition-fast);
+}
+
+/* Theme toggle button specific styles */
+.theme-toggle {
+    position: relative;
+}
+
+[data-theme="dark"] .theme-toggle i::before {
+    content: "\f185"; /* fa-sun */
+}
+
+[data-theme="light"] .theme-toggle i::before {
+    content: "\f186"; /* fa-moon */
+}
+
+/* Auto theme preference */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+        --bg-primary: #0f172a;
+        --bg-secondary: #1e293b;
+        --bg-tertiary: #334155;
+        --text-primary: #f8fafc;
+        --text-secondary: #cbd5e1;
+        --text-muted: #64748b;
+        --border-color: #334155;
+        --border-hover: #475569;
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+    }
+}
+
+/* Custom scrollbar for dark theme */
+[data-theme="dark"] ::-webkit-scrollbar {
+    width: 8px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: var(--radius-md);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background: var(--border-hover);
+}
+
+/* Light theme scrollbar */
+[data-theme="light"] ::-webkit-scrollbar {
+    width: 8px;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: var(--radius-md);
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+    background: var(--border-hover);
+}
+
+/* Theme-aware link styles */
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--primary-hover);
+}
+
+/* Theme-aware selection styles */
+::selection {
+    background: var(--primary-color);
+    color: white;
+}
+
+[data-theme="dark"] ::selection {
+    background: var(--primary-color);
+    color: var(--bg-primary);
+}
+
+/* Theme-aware focus styles */
+:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Custom properties for theme-aware gradients */
+[data-theme="light"] {
+    --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+    --gradient-background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+}
+
+[data-theme="dark"] {
+    --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, #3b82f6 100%);
+    --gradient-background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+}
+
+/* Theme toggle animation */
+.theme-toggle {
+    transform-origin: center;
+}
+
+.theme-toggle.transitioning {
+    animation: themeToggle 0.3s ease-in-out;
+}
+
+@keyframes themeToggle {
+    50% {
+        transform: rotate(180deg) scale(0.8);
+    }
+}
+
+/* Theme-aware code blocks (for potential future use) */
+.code-block {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-4);
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+    overflow-x: auto;
+}
+
+[data-theme="dark"] .code-block {
+    background: var(--bg-primary);
+    color: #e2e8f0;
+}
+
+/* Theme-aware syntax highlighting */
+.token.comment { color: var(--text-muted); }
+.token.string { color: #10b981; }
+.token.number { color: #f59e0b; }
+.token.keyword { color: var(--primary-color); }
+.token.function { color: #8b5cf6; }
+.token.operator { color: var(--text-secondary); }
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    :root {
+        --border-color: #000000;
+        --text-secondary: #000000;
+    }
+    
+    [data-theme="dark"] {
+        --border-color: #ffffff;
+        --text-secondary: #ffffff;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .loading-spinner {
+        animation: none;
+        border-left-color: transparent;
+    }
+}
+
+/* Print styles */
+@media print {
+    * {
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+    }
+    
+    .sidebar,
+    .app-header,
+    .notifications {
+        display: none !important;
+    }
+    
+    .main-content {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}

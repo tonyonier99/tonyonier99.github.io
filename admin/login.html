@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登入 - GitHub 管理後台</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/themes.css" rel="stylesheet">
+    <link href="css/responsive.css" rel="stylesheet">
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-header">
+            <i class="fab fa-github"></i>
+            <h1>GitHub 管理後台</h1>
+            <p>管理您的 GitHub 資源</p>
+        </div>
+
+        <div class="login-methods">
+            <button id="github-oauth-btn" class="login-btn primary">
+                <i class="fab fa-github"></i>
+                使用 GitHub OAuth 登入
+            </button>
+            
+            <div class="divider">
+                <span>或</span>
+            </div>
+
+            <div class="token-login">
+                <input type="password" id="personal-token" placeholder="輸入 Personal Access Token" />
+                <button id="token-login-btn" class="login-btn secondary">
+                    <i class="fas fa-key"></i>
+                    使用 Token 登入
+                </button>
+            </div>
+
+            <div class="token-help">
+                <p><i class="fas fa-info-circle"></i> 
+                需要 GitHub Personal Access Token？
+                <a href="https://github.com/settings/tokens" target="_blank">點此建立</a>
+                </p>
+                <details class="token-permissions">
+                    <summary>需要的權限</summary>
+                    <ul>
+                        <li>repo (完整控制私有倉庫)</li>
+                        <li>public_repo (公開倉庫存取)</li>
+                        <li>user (讀取用戶資訊)</li>
+                        <li>delete_repo (刪除倉庫，可選)</li>
+                    </ul>
+                </details>
+            </div>
+        </div>
+
+        <div id="login-status" class="login-status hidden">
+            <div class="status-content">
+                <div class="loading-spinner"></div>
+                <p id="status-message">正在驗證...</p>
+            </div>
+        </div>
+
+        <div id="login-error" class="login-error hidden">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p id="error-message"></p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/github-api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Initialize login page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if already logged in
+            if (Auth.isAuthenticated()) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Handle OAuth callback
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            if (code) {
+                Auth.handleOAuthCallback(code);
+            }
+
+            // Set up event listeners
+            document.getElementById('github-oauth-btn').addEventListener('click', Auth.initiateOAuth);
+            document.getElementById('token-login-btn').addEventListener('click', () => {
+                const token = document.getElementById('personal-token').value.trim();
+                if (token) {
+                    Auth.loginWithToken(token);
+                } else {
+                    Utils.showNotification('請輸入 Personal Access Token', 'error');
+                }
+            });
+
+            // Enter key support for token input
+            document.getElementById('personal-token').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    document.getElementById('token-login-btn').click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
