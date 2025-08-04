@@ -1,708 +1,679 @@
-// Main Customization Admin System
-class CustomizeAdmin {
+/**
+ * Main Customize Application - Orchestrates all customization functionality
+ */
+
+class CustomizeApp {
     constructor() {
-        this.settings = {
-            colors: {
-                primary: '#ff6b35',
-                secondary: '#2a2a3a',
-                textPrimary: '#1f2937',
-                textSecondary: '#6b7280',
-                backgroundPrimary: '#ffffff',
-                backgroundSecondary: '#f9fafb'
-            },
-            typography: {
-                headingFont: 'Inter',
-                bodyFont: 'Inter',
-                headingSize: 48,
-                bodySize: 16
-            },
-            spacing: {
-                sectionSpacing: 60,
-                elementSpacing: 24,
-                containerWidth: 1200
-            },
-            effects: {
-                borderRadius: 8,
-                shadowIntensity: 2,
-                animationStyle: 'fade'
-            },
-            content: {
-                heroTitle: '哈囉，我是 Tony',
-                heroSubtitle: '創業家、內容創作者與專業領域專家',
-                heroDescription: '我致力於透過創新思維和實際行動，為世界帶來正面的改變。通過分享知識、經驗和洞察，幫助更多人實現他們的夢想，建立一個更美好的未來。',
-                heroImage: 'https://via.placeholder.com/240x240/ff6b35/ffffff?text=TONY'
-            },
-            layout: {
-                sections: ['hero', 'stats', 'articles', 'courses', 'newsletter', 'youtube']
-            },
-            responsive: {
-                desktop: { columns: 2 },
-                tablet: { columns: 2 },
-                mobile: { columns: 1 }
-            }
-        };
-        
         this.currentPage = 'layout';
-        this.selectedElement = null;
         this.isPreviewMode = false;
-        
-        this.init();
+        this.initializeApp();
     }
 
-    init() {
+    /**
+     * Initialize the application
+     */
+    initializeApp() {
+        this.initializeNavigation();
+        this.initializeActions();
         this.setupEventListeners();
-        this.loadSavedSettings();
-        this.showMainApp();
-        this.initializeModules();
-        this.updatePreview();
+        this.loadApplication();
     }
 
-    initializeModules() {
-        // Initialize all manager modules
-        this.dragDropManager = new DragDropManager(this);
-        this.styleEditor = new StyleEditor(this);
-        this.contentManager = new ContentManager(this);
-        this.responsiveManager = new ResponsiveManager(this);
-        this.previewManager = new PreviewManager(this);
-    }
+    /**
+     * Initialize navigation between pages
+     */
+    initializeNavigation() {
+        const navLinks = document.querySelectorAll('.nav-link[data-page]');
+        const pages = document.querySelectorAll('.admin-page');
 
-    setupEventListeners() {
-        // Navigation
-        document.querySelectorAll('.nav-link').forEach(link => {
+        navLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
-                const page = e.currentTarget.dataset.page;
-                this.switchPage(page);
+                const targetPage = link.dataset.page;
+                this.switchPage(targetPage);
             });
         });
-
-        // Save and Publish buttons
-        document.getElementById('save-changes').addEventListener('click', () => {
-            this.saveSettings();
-        });
-
-        document.getElementById('publish').addEventListener('click', () => {
-            this.publishChanges();
-        });
-
-        // Style tabs
-        document.querySelectorAll('.style-tab').forEach(tab => {
-            tab.addEventListener('click', (e) => {
-                const tabName = e.currentTarget.dataset.tab;
-                this.switchStyleTab(tabName);
-            });
-        });
-
-        // Device selector
-        document.querySelectorAll('.device-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const device = e.currentTarget.dataset.device;
-                this.switchDevice(device);
-            });
-        });
-
-        // Preview device selector
-        document.querySelectorAll('.preview-device').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const width = e.currentTarget.dataset.width;
-                this.setPreviewWidth(width);
-            });
-        });
-
-        // Color inputs
-        this.setupColorInputs();
-        
-        // Typography inputs
-        this.setupTypographyInputs();
-        
-        // Spacing inputs
-        this.setupSpacingInputs();
-        
-        // Effects inputs
-        this.setupEffectsInputs();
-        
-        // Content inputs
-        this.setupContentInputs();
-
-        // Properties panel close
-        document.getElementById('close-properties').addEventListener('click', () => {
-            this.hidePropertiesPanel();
-        });
     }
 
-    setupColorInputs() {
-        const colorInputs = {
-            'brand-primary': 'colors.primary',
-            'brand-secondary': 'colors.secondary',
-            'text-primary': 'colors.textPrimary',
-            'text-secondary': 'colors.textSecondary',
-            'bg-primary': 'colors.backgroundPrimary',
-            'bg-secondary': 'colors.backgroundSecondary'
-        };
-
-        Object.entries(colorInputs).forEach(([id, settingPath]) => {
-            const input = document.getElementById(id);
-            if (input) {
-                input.addEventListener('change', (e) => {
-                    this.updateNestedSetting(settingPath, e.target.value);
-                    this.updatePreview();
-                });
-            }
-        });
-    }
-
-    setupTypographyInputs() {
-        // Heading font
-        document.getElementById('heading-font').addEventListener('change', (e) => {
-            this.settings.typography.headingFont = e.target.value;
-            this.updatePreview();
-        });
-
-        // Body font
-        document.getElementById('body-font').addEventListener('change', (e) => {
-            this.settings.typography.bodyFont = e.target.value;
-            this.updatePreview();
-        });
-
-        // Heading size
-        const headingSizeInput = document.getElementById('heading-size');
-        const headingSizeValue = document.getElementById('heading-size-value');
-        headingSizeInput.addEventListener('input', (e) => {
-            const value = e.target.value;
-            this.settings.typography.headingSize = parseInt(value);
-            headingSizeValue.textContent = value + 'px';
-            this.updatePreview();
-        });
-
-        // Body size
-        const bodySizeInput = document.getElementById('body-size');
-        const bodySizeValue = document.getElementById('body-size-value');
-        bodySizeInput.addEventListener('input', (e) => {
-            const value = e.target.value;
-            this.settings.typography.bodySize = parseInt(value);
-            bodySizeValue.textContent = value + 'px';
-            this.updatePreview();
-        });
-    }
-
-    setupSpacingInputs() {
-        // Section spacing
-        const sectionSpacingInput = document.getElementById('section-spacing');
-        const sectionSpacingValue = document.getElementById('section-spacing-value');
-        sectionSpacingInput.addEventListener('input', (e) => {
-            const value = e.target.value;
-            this.settings.spacing.sectionSpacing = parseInt(value);
-            sectionSpacingValue.textContent = value + 'px';
-            this.updatePreview();
-        });
-
-        // Element spacing
-        const elementSpacingInput = document.getElementById('element-spacing');
-        const elementSpacingValue = document.getElementById('element-spacing-value');
-        elementSpacingInput.addEventListener('input', (e) => {
-            const value = e.target.value;
-            this.settings.spacing.elementSpacing = parseInt(value);
-            elementSpacingValue.textContent = value + 'px';
-            this.updatePreview();
-        });
-
-        // Container width
-        const containerWidthInput = document.getElementById('container-width');
-        const containerWidthValue = document.getElementById('container-width-value');
-        containerWidthInput.addEventListener('input', (e) => {
-            const value = e.target.value;
-            this.settings.spacing.containerWidth = parseInt(value);
-            containerWidthValue.textContent = value + 'px';
-            this.updatePreview();
-        });
-    }
-
-    setupEffectsInputs() {
-        // Border radius
-        const borderRadiusInput = document.getElementById('border-radius');
-        const borderRadiusValue = document.getElementById('border-radius-value');
-        borderRadiusInput.addEventListener('input', (e) => {
-            const value = e.target.value;
-            this.settings.effects.borderRadius = parseInt(value);
-            borderRadiusValue.textContent = value + 'px';
-            this.updatePreview();
-        });
-
-        // Shadow intensity
-        const shadowIntensityInput = document.getElementById('shadow-intensity');
-        const shadowIntensityValue = document.getElementById('shadow-intensity-value');
-        const intensityLabels = ['無', '輕微', '中等', '強', '很強', '極強'];
-        shadowIntensityInput.addEventListener('input', (e) => {
-            const value = parseInt(e.target.value);
-            this.settings.effects.shadowIntensity = value;
-            shadowIntensityValue.textContent = intensityLabels[value];
-            this.updatePreview();
-        });
-
-        // Animation style
-        document.getElementById('animation-style').addEventListener('change', (e) => {
-            this.settings.effects.animationStyle = e.target.value;
-            this.updatePreview();
-        });
-    }
-
-    setupContentInputs() {
-        const contentInputs = {
-            'hero-title': 'content.heroTitle',
-            'hero-subtitle': 'content.heroSubtitle',
-            'hero-description': 'content.heroDescription',
-            'hero-image': 'content.heroImage'
-        };
-
-        Object.entries(contentInputs).forEach(([id, settingPath]) => {
-            const input = document.getElementById(id);
-            if (input) {
-                input.addEventListener('input', (e) => {
-                    this.updateNestedSetting(settingPath, e.target.value);
-                    this.updatePreview();
-                });
-            }
-        });
-    }
-
-    updateNestedSetting(path, value) {
-        const keys = path.split('.');
-        let obj = this.settings;
-        for (let i = 0; i < keys.length - 1; i++) {
-            obj = obj[keys[i]];
-        }
-        obj[keys[keys.length - 1]] = value;
-    }
-
-    showMainApp() {
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('main-app').style.display = 'block';
-    }
-
-    switchPage(pageName) {
+    /**
+     * Switch between admin pages
+     */
+    switchPage(pageId) {
         // Update navigation
         document.querySelectorAll('.nav-link').forEach(link => {
             link.classList.remove('active');
         });
-        document.querySelector(`[data-page="${pageName}"]`).classList.add('active');
+        document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
 
         // Update page content
         document.querySelectorAll('.admin-page').forEach(page => {
             page.classList.remove('active');
         });
-        document.getElementById(`${pageName}-page`).classList.add('active');
+        document.getElementById(`${pageId}-page`).classList.add('active');
 
-        this.currentPage = pageName;
+        this.currentPage = pageId;
+
+        // Initialize page-specific functionality
+        this.initializePageFunctionality(pageId);
     }
 
-    switchStyleTab(tabName) {
-        // Update tabs
-        document.querySelectorAll('.style-tab').forEach(tab => {
-            tab.classList.remove('active');
-        });
-        document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
-
-        // Update content
-        document.querySelectorAll('.tab-content').forEach(content => {
-            content.classList.remove('active');
-        });
-        document.getElementById(`${tabName}-tab`).classList.add('active');
+    /**
+     * Initialize page-specific functionality
+     */
+    initializePageFunctionality(pageId) {
+        switch (pageId) {
+            case 'layout':
+                this.initializeLayoutPage();
+                break;
+            case 'styles':
+                this.initializeStylesPage();
+                break;
+            case 'content':
+                this.initializeContentPage();
+                break;
+            case 'responsive':
+                this.initializeResponsivePage();
+                break;
+            case 'preview':
+                this.initializePreviewPage();
+                break;
+        }
     }
 
-    switchDevice(deviceName) {
-        // Update device buttons
-        document.querySelectorAll('.device-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        document.querySelector(`[data-device="${deviceName}"]`).classList.add('active');
-
-        // Update device settings
-        document.querySelectorAll('.device-settings').forEach(setting => {
-            setting.classList.remove('active');
-        });
-        document.getElementById(`${deviceName}-settings`).classList.add('active');
+    /**
+     * Initialize layout page
+     */
+    initializeLayoutPage() {
+        // Layout manager should already be initialized
+        if (window.layoutManager) {
+            window.layoutManager.initializeSortable();
+        }
     }
 
-    setPreviewWidth(width) {
-        // Update preview device buttons
-        document.querySelectorAll('.preview-device').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        document.querySelector(`[data-width="${width}"]`).classList.add('active');
-
-        // Update iframe width
-        const iframe = document.getElementById('preview-iframe');
-        iframe.style.width = width;
-        iframe.style.maxWidth = width === '100%' ? '1200px' : width;
+    /**
+     * Initialize styles page
+     */
+    initializeStylesPage() {
+        // Ensure style manager is properly initialized
+        if (window.styleManager) {
+            window.styleManager.loadSavedStyles();
+        }
     }
 
-    initializeDragDrop() {
-        // Initialize sortable for page builder
-        const pageBuilder = document.getElementById('page-builder');
-        if (pageBuilder) {
-            new Sortable(pageBuilder, {
-                group: 'sections',
-                animation: 150,
-                ghostClass: 'dragging',
-                chosenClass: 'drag-over',
-                onAdd: (evt) => {
-                    this.handleElementDrop(evt);
-                },
-                onSort: (evt) => {
-                    this.handleSectionReorder(evt);
-                }
+    /**
+     * Initialize content page
+     */
+    initializeContentPage() {
+        this.initializeContentEditors();
+    }
+
+    /**
+     * Initialize content editors
+     */
+    initializeContentEditors() {
+        const heroTitle = document.getElementById('hero-title');
+        const heroSubtitle = document.getElementById('hero-subtitle');
+        const heroDescription = document.getElementById('hero-description');
+        const heroImage = document.getElementById('hero-image');
+
+        // Hero content editing
+        if (heroTitle) {
+            heroTitle.addEventListener('input', (e) => {
+                this.updateFrontendContent('.hero h1', e.target.value);
             });
         }
 
-        // Make element library items draggable
-        document.querySelectorAll('.element-item').forEach(item => {
-            item.addEventListener('dragstart', (e) => {
-                const elementType = e.target.dataset.element;
-                e.dataTransfer.setData('text/plain', elementType);
+        if (heroSubtitle) {
+            heroSubtitle.addEventListener('input', (e) => {
+                this.updateFrontendContent('.hero .tagline', e.target.value);
+            });
+        }
+
+        if (heroDescription) {
+            heroDescription.addEventListener('input', (e) => {
+                this.updateFrontendContent('.hero .description', e.target.value);
+            });
+        }
+
+        if (heroImage) {
+            heroImage.addEventListener('input', (e) => {
+                this.updateFrontendImage('.hero-image img', e.target.value);
+            });
+        }
+    }
+
+    /**
+     * Update frontend content in real-time
+     */
+    updateFrontendContent(selector, content) {
+        // Update in preview iframe if available
+        const previewFrame = document.getElementById('preview-iframe');
+        if (previewFrame && previewFrame.contentDocument) {
+            const element = previewFrame.contentDocument.querySelector(selector);
+            if (element) {
+                element.textContent = content;
+            }
+        }
+
+        // Save to localStorage
+        const contentChanges = JSON.parse(localStorage.getItem('contentChanges') || '{}');
+        contentChanges[selector] = content;
+        localStorage.setItem('contentChanges', JSON.stringify(contentChanges));
+    }
+
+    /**
+     * Update frontend image
+     */
+    updateFrontendImage(selector, src) {
+        const previewFrame = document.getElementById('preview-iframe');
+        if (previewFrame && previewFrame.contentDocument) {
+            const element = previewFrame.contentDocument.querySelector(selector);
+            if (element) {
+                element.src = src;
+            }
+        }
+
+        // Save to localStorage
+        const contentChanges = JSON.parse(localStorage.getItem('contentChanges') || '{}');
+        contentChanges[selector] = { type: 'image', src: src };
+        localStorage.setItem('contentChanges', JSON.stringify(contentChanges));
+    }
+
+    /**
+     * Initialize responsive page
+     */
+    initializeResponsivePage() {
+        this.initializeDeviceSelector();
+        this.initializeResponsiveControls();
+    }
+
+    /**
+     * Initialize device selector
+     */
+    initializeDeviceSelector() {
+        const deviceButtons = document.querySelectorAll('.device-btn');
+        const deviceSettings = document.querySelectorAll('.device-settings');
+
+        deviceButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active button
+                deviceButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Update active settings
+                deviceSettings.forEach(s => s.classList.remove('active'));
+                const targetDevice = btn.dataset.device;
+                document.getElementById(`${targetDevice}-settings`).classList.add('active');
             });
         });
     }
 
-    handleElementDrop(evt) {
-        const elementType = evt.item.textContent.trim().split('\n')[1].trim();
-        const sectionElement = this.createSectionElement(elementType);
+    /**
+     * Initialize responsive controls
+     */
+    initializeResponsiveControls() {
+        const columnSelectors = document.querySelectorAll('select[id$="-columns"]');
         
-        // Replace the dragged element with the actual section
-        evt.item.replaceWith(sectionElement);
-        
-        // Update layout settings
-        this.updateLayoutFromDOM();
-        this.updatePreview();
+        columnSelectors.forEach(selector => {
+            selector.addEventListener('change', (e) => {
+                const deviceType = e.target.id.replace('-columns', '');
+                const columns = e.target.value;
+                this.updateResponsiveLayout(deviceType, columns);
+            });
+        });
     }
 
-    handleSectionReorder(evt) {
-        this.updateLayoutFromDOM();
-        this.updatePreview();
+    /**
+     * Update responsive layout
+     */
+    updateResponsiveLayout(deviceType, columns) {
+        const responsiveSettings = JSON.parse(localStorage.getItem('responsiveSettings') || '{}');
+        responsiveSettings[deviceType] = { columns: columns };
+        localStorage.setItem('responsiveSettings', JSON.stringify(responsiveSettings));
+
+        // Apply to preview
+        this.applyResponsiveSettings();
     }
 
-    createSectionElement(elementType) {
-        const section = document.createElement('div');
-        section.className = 'builder-section';
-        section.dataset.elementType = elementType;
+    /**
+     * Apply responsive settings
+     */
+    applyResponsiveSettings() {
+        const settings = JSON.parse(localStorage.getItem('responsiveSettings') || '{}');
         
-        section.innerHTML = `
-            <div class="section-controls">
-                <button class="section-control" data-action="edit" title="編輯">
-                    <i class="fas fa-edit"></i>
-                </button>
-                <button class="section-control" data-action="delete" title="刪除">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-            <div class="section-content">
-                ${this.getSectionPreview(elementType)}
-            </div>
-        `;
+        let css = '';
+        Object.entries(settings).forEach(([device, config]) => {
+            const breakpoints = {
+                desktop: '(min-width: 1200px)',
+                tablet: '(max-width: 1199px) and (min-width: 768px)',
+                mobile: '(max-width: 767px)'
+            };
 
-        // Add event listeners for section controls
-        section.querySelector('[data-action="edit"]').addEventListener('click', () => {
-            this.editSection(section);
+            if (breakpoints[device]) {
+                css += `@media ${breakpoints[device]} {
+                    .grid { grid-template-columns: repeat(${config.columns}, 1fr) !important; }
+                }\n`;
+            }
         });
 
-        section.querySelector('[data-action="delete"]').addEventListener('click', () => {
-            this.deleteSection(section);
-        });
-
-        return section;
+        // Inject responsive CSS
+        this.injectCustomCSS(css, 'responsive-styles');
     }
 
-    getSectionPreview(elementType) {
-        const previews = {
-            hero: `
-                <h2 style="margin: 0 0 1rem 0; color: var(--primary-orange);">英雄區塊</h2>
-                <p style="margin: 0; color: var(--text-secondary);">主要橫幅區域，包含標題、描述和圖片</p>
-            `,
-            stats: `
-                <h2 style="margin: 0 0 1rem 0; color: var(--primary-orange);">統計數據</h2>
-                <p style="margin: 0; color: var(--text-secondary);">顯示重要數據的統計區塊</p>
-            `,
-            articles: `
-                <h2 style="margin: 0 0 1rem 0; color: var(--primary-orange);">文章列表</h2>
-                <p style="margin: 0; color: var(--text-secondary);">最新文章展示區域</p>
-            `,
-            courses: `
-                <h2 style="margin: 0 0 1rem 0; color: var(--primary-orange);">課程展示</h2>
-                <p style="margin: 0; color: var(--text-secondary);">精選課程介紹區塊</p>
-            `,
-            newsletter: `
-                <h2 style="margin: 0 0 1rem 0; color: var(--primary-orange);">電子報訂閱</h2>
-                <p style="margin: 0; color: var(--text-secondary);">電子郵件收集表單</p>
-            `,
-            youtube: `
-                <h2 style="margin: 0 0 1rem 0; color: var(--primary-orange);">YouTube 頻道</h2>
-                <p style="margin: 0; color: var(--text-secondary);">YouTube 影片嵌入區域</p>
-            `,
-            testimonials: `
-                <h2 style="margin: 0 0 1rem 0; color: var(--primary-orange);">客戶見證</h2>
-                <p style="margin: 0; color: var(--text-secondary);">用戶評價和見證</p>
-            `,
-            contact: `
-                <h2 style="margin: 0 0 1rem 0; color: var(--primary-orange);">聯絡資訊</h2>
-                <p style="margin: 0; color: var(--text-secondary);">聯絡方式和表單</p>
-            `
+    /**
+     * Initialize preview page
+     */
+    initializePreviewPage() {
+        this.initializePreviewControls();
+        this.refreshPreview();
+    }
+
+    /**
+     * Initialize preview controls
+     */
+    initializePreviewControls() {
+        const deviceButtons = document.querySelectorAll('.preview-device');
+        const iframe = document.getElementById('preview-iframe');
+
+        deviceButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active button
+                deviceButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Update iframe width
+                const width = btn.dataset.width;
+                if (iframe) {
+                    iframe.style.width = width;
+                    iframe.style.maxWidth = width === '100%' ? 'none' : width;
+                }
+            });
+        });
+    }
+
+    /**
+     * Refresh preview
+     */
+    refreshPreview() {
+        const iframe = document.getElementById('preview-iframe');
+        if (iframe) {
+            iframe.src = iframe.src; // Force reload
+            
+            iframe.onload = () => {
+                this.applyCustomizationsToPreview();
+            };
+        }
+    }
+
+    /**
+     * Apply all customizations to preview
+     */
+    applyCustomizationsToPreview() {
+        const iframe = document.getElementById('preview-iframe');
+        if (!iframe || !iframe.contentDocument) return;
+
+        // Apply style changes
+        if (window.styleManager) {
+            const customCSS = this.generateAllCustomCSS();
+            this.injectCSSToIframe(iframe, customCSS);
+        }
+
+        // Apply content changes
+        this.applyContentChangesToPreview(iframe);
+
+        // Apply element changes
+        this.applyElementChangesToPreview(iframe);
+    }
+
+    /**
+     * Generate all custom CSS
+     */
+    generateAllCustomCSS() {
+        let css = '';
+
+        // Global styles
+        const globalStyles = JSON.parse(localStorage.getItem('globalStyles') || '{}');
+        if (Object.keys(globalStyles).length > 0) {
+            css += ':root {\n';
+            Object.entries(globalStyles).forEach(([variable, value]) => {
+                css += `  ${variable}: ${value};\n`;
+            });
+            css += '}\n\n';
+        }
+
+        // Element styles
+        const elementStyles = JSON.parse(localStorage.getItem('elementStyles') || '{}');
+        Object.entries(elementStyles).forEach(([selector, styles]) => {
+            css += `${selector} {\n`;
+            Object.entries(styles).forEach(([property, value]) => {
+                css += `  ${property}: ${value};\n`;
+            });
+            css += '}\n\n';
+        });
+
+        // Add the enhanced visual CSS from style manager
+        if (window.styleManager) {
+            css += window.styleManager.getEnhancedVisualCSS();
+            css += window.styleManager.getResponsiveCSS();
+            css += window.styleManager.getAnimationCSS();
+        }
+
+        return css;
+    }
+
+    /**
+     * Inject CSS to iframe
+     */
+    injectCSSToIframe(iframe, css) {
+        const doc = iframe.contentDocument;
+        let styleElement = doc.getElementById('custom-styles');
+        
+        if (!styleElement) {
+            styleElement = doc.createElement('style');
+            styleElement.id = 'custom-styles';
+            doc.head.appendChild(styleElement);
+        }
+        
+        styleElement.textContent = css;
+    }
+
+    /**
+     * Apply content changes to preview
+     */
+    applyContentChangesToPreview(iframe) {
+        const contentChanges = JSON.parse(localStorage.getItem('contentChanges') || '{}');
+        const doc = iframe.contentDocument;
+
+        Object.entries(contentChanges).forEach(([selector, content]) => {
+            const element = doc.querySelector(selector);
+            if (element) {
+                if (typeof content === 'object' && content.type === 'image') {
+                    element.src = content.src;
+                } else {
+                    element.textContent = content;
+                }
+            }
+        });
+    }
+
+    /**
+     * Apply element changes to preview
+     */
+    applyElementChangesToPreview(iframe) {
+        const elementChanges = JSON.parse(localStorage.getItem('elementChanges') || '{}');
+        const doc = iframe.contentDocument;
+
+        Object.entries(elementChanges).forEach(([elementId, properties]) => {
+            const element = doc.querySelector(`[data-element-id="${elementId}"]`);
+            if (element) {
+                Object.entries(properties).forEach(([property, value]) => {
+                    if (property === 'content') {
+                        element.textContent = value;
+                    } else if (property === 'src') {
+                        element.src = value;
+                    } else {
+                        element.style[property] = value;
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * Initialize action buttons
+     */
+    initializeActions() {
+        // Save changes
+        const saveBtn = document.getElementById('save-changes');
+        if (saveBtn) {
+            saveBtn.addEventListener('click', () => {
+                this.saveAllChanges();
+            });
+        }
+
+        // Publish website
+        const publishBtn = document.getElementById('publish');
+        if (publishBtn) {
+            publishBtn.addEventListener('click', () => {
+                this.publishWebsite();
+            });
+        }
+
+        // Import configuration
+        const importBtn = document.getElementById('import-config');
+        if (importBtn) {
+            importBtn.addEventListener('click', () => {
+                this.importConfiguration();
+            });
+        }
+
+        // Export configuration
+        const exportBtn = document.getElementById('export-config');
+        if (exportBtn) {
+            exportBtn.addEventListener('click', () => {
+                this.exportConfiguration();
+            });
+        }
+    }
+
+    /**
+     * Save all changes
+     */
+    saveAllChanges() {
+        // All data is already saved to localStorage by individual managers
+        // This just provides user feedback
+        this.showNotification('所有變更已儲存', 'success');
+        
+        // Refresh preview to show latest changes
+        if (this.currentPage === 'preview') {
+            this.refreshPreview();
+        }
+    }
+
+    /**
+     * Publish website
+     */
+    publishWebsite() {
+        // In a real implementation, this would push changes to GitHub
+        // For now, we'll just show a success message
+        this.showNotification('網站發布功能開發中...', 'info');
+    }
+
+    /**
+     * Import configuration
+     */
+    importConfiguration() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json';
+        
+        input.onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const config = JSON.parse(event.target.result);
+                        this.restoreConfiguration(config);
+                        this.showNotification('配置已匯入', 'success');
+                    } catch (error) {
+                        this.showNotification('配置檔案格式錯誤', 'error');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        };
+        
+        input.click();
+    }
+
+    /**
+     * Export configuration
+     */
+    exportConfiguration() {
+        const config = {
+            globalStyles: JSON.parse(localStorage.getItem('globalStyles') || '{}'),
+            elementStyles: JSON.parse(localStorage.getItem('elementStyles') || '{}'),
+            elementChanges: JSON.parse(localStorage.getItem('elementChanges') || '{}'),
+            contentChanges: JSON.parse(localStorage.getItem('contentChanges') || '{}'),
+            currentLayout: JSON.parse(localStorage.getItem('currentLayout') || '[]'),
+            responsiveSettings: JSON.parse(localStorage.getItem('responsiveSettings') || '{}'),
+            timestamp: new Date().toISOString(),
+            version: '1.0'
         };
 
-        return previews[elementType] || `
-            <h2 style="margin: 0 0 1rem 0; color: var(--primary-orange);">${elementType}</h2>
-            <p style="margin: 0; color: var(--text-secondary);">自定義區塊</p>
-        `;
-    }
-
-    editSection(sectionElement) {
-        this.selectedElement = sectionElement;
-        this.showPropertiesPanel(sectionElement.dataset.elementType);
-    }
-
-    deleteSection(sectionElement) {
-        if (confirm('確定要刪除這個區塊嗎？')) {
-            sectionElement.remove();
-            this.updateLayoutFromDOM();
-            this.updatePreview();
-        }
-    }
-
-    showPropertiesPanel(elementType) {
-        const panel = document.getElementById('properties-panel');
-        const content = panel.querySelector('.properties-content');
+        const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
         
-        content.innerHTML = this.getPropertiesForm(elementType);
-        panel.classList.add('show');
-    }
-
-    hidePropertiesPanel() {
-        document.getElementById('properties-panel').classList.remove('show');
-        this.selectedElement = null;
-    }
-
-    getPropertiesForm(elementType) {
-        // This would return a form specific to the element type
-        return `
-            <div class="property-group">
-                <label>元素類型</label>
-                <input type="text" value="${elementType}" readonly>
-            </div>
-            <div class="property-group">
-                <label>顯示狀態</label>
-                <select>
-                    <option value="visible">顯示</option>
-                    <option value="hidden">隱藏</option>
-                </select>
-            </div>
-            <div class="property-group">
-                <label>自定義 CSS 類別</label>
-                <input type="text" placeholder="輸入 CSS 類別名稱">
-            </div>
-        `;
-    }
-
-    updateLayoutFromDOM() {
-        const sections = document.querySelectorAll('.builder-section');
-        this.settings.layout.sections = Array.from(sections).map(section => 
-            section.dataset.elementType
-        );
-    }
-
-    updatePreview() {
-        // Generate custom CSS based on current settings
-        const customCSS = this.generateCustomCSS();
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `website-config-${new Date().toISOString().slice(0, 10)}.json`;
+        a.click();
         
-        // Update the preview iframe with new styles
-        this.applyStylesToPreview(customCSS);
+        URL.revokeObjectURL(url);
     }
 
-    generateCustomCSS() {
-        const { colors, typography, spacing, effects } = this.settings;
-        
-        return `
-            :root {
-                --primary-orange: ${colors.primary};
-                --dark-blue-gray: ${colors.secondary};
-                --text-primary: ${colors.textPrimary};
-                --text-secondary: ${colors.textSecondary};
-                --background-white: ${colors.backgroundPrimary};
-                --light-background: ${colors.backgroundSecondary};
-            }
-            
-            body {
-                font-family: '${typography.bodyFont}', sans-serif;
-                font-size: ${typography.bodySize}px;
-            }
-            
-            h1, h2, h3, h4, h5, h6 {
-                font-family: '${typography.headingFont}', sans-serif;
-            }
-            
-            .hero-text h1 {
-                font-size: ${typography.headingSize}px;
-            }
-            
-            .section {
-                padding: ${spacing.sectionSpacing}px 0;
-            }
-            
-            .container {
-                max-width: ${spacing.containerWidth}px;
-            }
-            
-            .card, .course-card, .article-card {
-                border-radius: ${effects.borderRadius}px;
-                box-shadow: ${this.getShadowValue(effects.shadowIntensity)};
-            }
-            
-            .btn {
-                border-radius: ${effects.borderRadius}px;
-            }
-        `;
-    }
-
-    getShadowValue(intensity) {
-        const shadows = [
-            'none',
-            '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-            '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-            '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-            '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-            '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
-        ];
-        return shadows[intensity] || shadows[2];
-    }
-
-    applyStylesToPreview(css) {
-        if (this.previewManager) {
-            this.previewManager.injectCustomStyles();
-        } else {
-            // Fallback method
-            try {
-                const iframe = document.getElementById('preview-iframe');
-                if (iframe && iframe.contentDocument) {
-                    let styleElement = iframe.contentDocument.getElementById('custom-styles');
-                    if (!styleElement) {
-                        styleElement = iframe.contentDocument.createElement('style');
-                        styleElement.id = 'custom-styles';
-                        iframe.contentDocument.head.appendChild(styleElement);
-                    }
-                    styleElement.textContent = css;
-                }
-            } catch (error) {
-                console.warn('無法更新預覽樣式:', error);
-            }
+    /**
+     * Restore configuration from imported data
+     */
+    restoreConfiguration(config) {
+        // Restore all saved data
+        if (config.globalStyles) {
+            localStorage.setItem('globalStyles', JSON.stringify(config.globalStyles));
         }
-    }
-
-    saveSettings() {
-        try {
-            localStorage.setItem('websiteCustomization', JSON.stringify(this.settings));
-            this.showNotification('設定已儲存', 'success');
-        } catch (error) {
-            console.error('儲存設定失敗:', error);
-            this.showNotification('儲存失敗', 'error');
+        if (config.elementStyles) {
+            localStorage.setItem('elementStyles', JSON.stringify(config.elementStyles));
         }
+        if (config.elementChanges) {
+            localStorage.setItem('elementChanges', JSON.stringify(config.elementChanges));
+        }
+        if (config.contentChanges) {
+            localStorage.setItem('contentChanges', JSON.stringify(config.contentChanges));
+        }
+        if (config.currentLayout) {
+            localStorage.setItem('currentLayout', JSON.stringify(config.currentLayout));
+        }
+        if (config.responsiveSettings) {
+            localStorage.setItem('responsiveSettings', JSON.stringify(config.responsiveSettings));
+        }
+
+        // Reload all managers
+        this.reloadAllManagers();
     }
 
-    loadSavedSettings() {
-        try {
-            const saved = localStorage.getItem('websiteCustomization');
-            if (saved) {
-                this.settings = { ...this.settings, ...JSON.parse(saved) };
-                this.applySavedSettingsToUI();
+    /**
+     * Reload all managers
+     */
+    reloadAllManagers() {
+        // Reload style manager
+        if (window.styleManager) {
+            window.styleManager.loadSavedStyles();
+        }
+
+        // Reload layout manager
+        if (window.layoutManager) {
+            window.layoutManager.loadSavedLayout();
+        }
+
+        // Reload element inspector
+        if (window.elementInspector) {
+            window.elementInspector.loadSavedChanges();
+        }
+
+        // Refresh current page
+        this.initializePageFunctionality(this.currentPage);
+    }
+
+    /**
+     * Setup event listeners
+     */
+    setupEventListeners() {
+        // Listen for element selection events
+        window.addEventListener('elementSelected', (e) => {
+            const propertiesPanel = document.getElementById('properties-panel');
+            if (propertiesPanel) {
+                propertiesPanel.style.display = 'block';
             }
-        } catch (error) {
-            console.error('載入設定失敗:', error);
-        }
-    }
-
-    applySavedSettingsToUI() {
-        // Apply color settings
-        Object.entries({
-            'brand-primary': this.settings.colors.primary,
-            'brand-secondary': this.settings.colors.secondary,
-            'text-primary': this.settings.colors.textPrimary,
-            'text-secondary': this.settings.colors.textSecondary,
-            'bg-primary': this.settings.colors.backgroundPrimary,
-            'bg-secondary': this.settings.colors.backgroundSecondary
-        }).forEach(([id, value]) => {
-            const input = document.getElementById(id);
-            if (input) input.value = value;
         });
 
-        // Apply typography settings
-        const headingFont = document.getElementById('heading-font');
-        if (headingFont) headingFont.value = this.settings.typography.headingFont;
+        // Close properties panel
+        const closePropertiesBtn = document.getElementById('close-properties');
+        if (closePropertiesBtn) {
+            closePropertiesBtn.addEventListener('click', () => {
+                const propertiesPanel = document.getElementById('properties-panel');
+                propertiesPanel.style.display = 'none';
+            });
+        }
+    }
+
+    /**
+     * Load application
+     */
+    loadApplication() {
+        // Hide loading screen
+        const loading = document.getElementById('loading');
+        const mainApp = document.getElementById('main-app');
         
-        const bodyFont = document.getElementById('body-font');
-        if (bodyFont) bodyFont.value = this.settings.typography.bodyFont;
-
-        // Apply content settings
-        Object.entries({
-            'hero-title': this.settings.content.heroTitle,
-            'hero-subtitle': this.settings.content.heroSubtitle,
-            'hero-description': this.settings.content.heroDescription,
-            'hero-image': this.settings.content.heroImage
-        }).forEach(([id, value]) => {
-            const input = document.getElementById(id);
-            if (input) input.value = value;
-        });
+        setTimeout(() => {
+            if (loading) loading.style.display = 'none';
+            if (mainApp) mainApp.style.display = 'block';
+            
+            // Initialize default page
+            this.initializePageFunctionality(this.currentPage);
+        }, 1000);
     }
 
-    publishChanges() {
-        // This would integrate with GitHub API or other deployment system
-        this.showNotification('發布功能開發中...', 'info');
+    /**
+     * Inject custom CSS
+     */
+    injectCustomCSS(css, id = 'custom-css') {
+        let styleElement = document.getElementById(id);
+        
+        if (!styleElement) {
+            styleElement = document.createElement('style');
+            styleElement.id = id;
+            document.head.appendChild(styleElement);
+        }
+        
+        styleElement.textContent = css;
     }
 
+    /**
+     * Show notification
+     */
     showNotification(message, type = 'info') {
         const notification = document.createElement('div');
-        notification.className = `notification ${type}`;
-        notification.textContent = message;
-        
-        Object.assign(notification.style, {
-            position: 'fixed',
-            top: '20px',
-            right: '20px',
-            padding: '1rem 1.5rem',
-            borderRadius: '8px',
-            color: 'white',
-            zIndex: '9999',
-            opacity: '0',
-            transform: 'translateY(-20px)',
-            transition: 'all 0.3s ease'
-        });
-
-        const colors = {
-            success: '#10b981',
-            error: '#ef4444',
-            warning: '#f59e0b',
-            info: '#3b82f6'
-        };
-
-        notification.style.backgroundColor = colors[type] || colors.info;
+        notification.className = `notification notification-${type}`;
+        notification.innerHTML = `
+            <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'times' : 'info'}-circle"></i>
+            ${message}
+        `;
         
         document.body.appendChild(notification);
         
-        // Animate in
         setTimeout(() => {
-            notification.style.opacity = '1';
-            notification.style.transform = 'translateY(0)';
+            notification.classList.add('show');
         }, 100);
         
-        // Remove after 3 seconds
         setTimeout(() => {
-            notification.style.opacity = '0';
-            notification.style.transform = 'translateY(-20px)';
+            notification.classList.remove('show');
             setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.parentNode.removeChild(notification);
+                if (document.body.contains(notification)) {
+                    document.body.removeChild(notification);
                 }
             }, 300);
         }, 3000);
     }
 }
 
-// Initialize the application when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    window.customizeAdmin = new CustomizeAdmin();
-});
+// Initialize the application
+let customizeApp;
+
+// Wait for DOM to be ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        customizeApp = new CustomizeApp();
+    });
+} else {
+    customizeApp = new CustomizeApp();
+}
