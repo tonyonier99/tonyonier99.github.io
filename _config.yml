@@ -1,7 +1,47 @@
 # 網站基本設定
-title: "d"
-description: "d"
+title: "Tony 的部落格"
+description: "創業家、內容創作者與專業領域專家"
+url: "https://tonyonier99.github.io"
+baseurl: ""
 
 # 作者資訊
 author:
-  name: "d"
+  name: "Tony"
+  email: "tony@example.com"
+
+# Jekyll 設定
+markdown: kramdown
+highlighter: rouge
+permalink: /:year/:month/:day/:title/
+
+# 導航頁面
+header_pages:
+  - about.md
+  - courses.md
+  - blog.md
+  - portfolio.md
+  - books.md
+  - contact.md
+
+# 排除檔案
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - admin-react-backup/
+
+# 預設值
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+    values:
+      layout: "default"
